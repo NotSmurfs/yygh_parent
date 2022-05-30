@@ -25,6 +25,11 @@
         </dependency>
         <dependency>
             <groupId>com.sjr.yygh</groupId>
+            <artifactId>common_util</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sjr.yygh</groupId>
             <artifactId>model</artifactId>
             <version>1.0</version>
         </dependency>
