@@ -22,6 +22,7 @@ import java.util.Random;
 @Api(tags = "医院设置管理")
 @RestController
 @RequestMapping("/admin/hosp/hospitalSet")
+@CrossOrigin
 public class HospitalSetController {
 //    注入hospitalSetService
     @Autowired
@@ -74,12 +75,12 @@ public class HospitalSetController {
     }
 
     @ApiOperation("根据Id获取医院信息")
-    @GetMapping("getHospSet/{id}")
-    public Result getHosptalSet(@PathVariable Long id){
+    @GetMapping("/getHospSet/{id}")
+    public Result c(@PathVariable Long id){
         return Result.ok(hospitalSetService.getById(id));
     }
 
-    @ApiOperation("根据Id修改医院设置")
+    @ApiOperation("修改医院设置")
     @PutMapping("/updateHospSet")
     public Result updateHosptalSet(@RequestBody HospitalSet hospitalSet){
         return Result.ok(hospitalSetService.updateById(hospitalSet));
