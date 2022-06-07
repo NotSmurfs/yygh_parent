@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Service;
@@ -21,12 +22,20 @@ public class DictController {
     @Autowired
     private DictService dictService;
 
-//    导出数据字典的接口
+//    导入数据字典的接口
+    @ApiOperation(value = "导入")
+    @PostMapping("importData")
+    public Result importData(MultipartFile file) {
+        dictService.importData(file);
+        return Result.ok();
+    }
+
+
+    //    导出数据字典的接口
     @ApiOperation(value="导出")
     @GetMapping(value = "/exportData")
-    public Result exportData(HttpServletResponse response) {
+    public void exportData(HttpServletResponse response) {
         dictService.exportData(response);
-        return Result.ok();
     }
 
 
