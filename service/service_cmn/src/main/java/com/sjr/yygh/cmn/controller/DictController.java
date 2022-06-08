@@ -24,7 +24,7 @@ public class DictController {
 
 //    导入数据字典的接口
     @ApiOperation(value = "导入")
-    @PostMapping("importData")
+    @PostMapping("/importData")
     public Result importData(MultipartFile file) {
         dictService.importData(file);
         return Result.ok();
