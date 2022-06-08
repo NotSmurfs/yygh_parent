@@ -1,5 +1,6 @@
 package com.sjr.yygh.hosp.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sjr.yygh.hosp.mapper.HospitalSetMapper;
 import com.sjr.yygh.hosp.service.HospitalSetService;
@@ -12,5 +13,12 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper,Hospit
 
     @Autowired
     private HospitalSetMapper hospitalSetMapper;
-
+    //根据传递过来的医院编号，查询签名
+    @Override
+    public String getSignKey(String hoscode) {
+        QueryWrapper<HospitalSet> hospitalSetQueryWrapper = new QueryWrapper<>();
+        hospitalSetQueryWrapper.eq("hoscode",hoscode);
+        HospitalSet hospitalSet = baseMapper.selectOne(hospitalSetQueryWrapper);
+        return hospitalSet.getSignKey();
+    }
 }
