@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -75,6 +76,31 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+//      根据dictCode和value查询医院等级
+    @Override
+    public String getDictName(String dictCode, String value) {
+//        如果dictCode为空则直接根据value查询
+        QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+        wrapper.eq("value",value);
+        if(StringUtils.isEmpty(dictCode)){
+            Dict dict = baseMapper.selectOne(wrapper);
+            return dict.getName();
+        }else{
+//          根据dict_code查询Id
+            Dict dictByDictCode = this.getDictByDictCode(dictCode);
+            Long id = dictByDictCode.getId();
+//            根据dictCode和value查询医院等级
+            wrapper.eq("parent_id",id);
+            return baseMapper.selectOne(wrapper).getName();
+        }
+    }
+
+//    根据dict_code查询Id
+    private Dict getDictByDictCode(String dictCode){
+        QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_code",dictCode);
+        return baseMapper.selectOne(wrapper);
     }
 
     //    判断Id下面是否有子数据
