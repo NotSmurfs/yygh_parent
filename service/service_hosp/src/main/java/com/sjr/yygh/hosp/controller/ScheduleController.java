@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Api( tags = "排班接口")
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/admin/hosp/schedule")
 public class ScheduleController {
