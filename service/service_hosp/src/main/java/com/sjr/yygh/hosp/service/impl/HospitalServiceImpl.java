@@ -6,15 +6,14 @@ import com.sjr.yygh.hosp.repository.HospitalRepository;
 import com.sjr.yygh.hosp.service.HospitalService;
 import com.sjr.yygh.model.hosp.Hospital;
 import com.sjr.yygh.vo.hosp.HospitalQueryVo;
+import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import sun.dc.pr.PRError;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class HospitalServiceImpl implements HospitalService {
@@ -74,6 +73,39 @@ public class HospitalServiceImpl implements HospitalService {
         });
         return pages;
     }
+
+    @Override
+    public void updateStatus(String id, Integer status) {
+//        根据Id查询医院信息
+        Hospital hospital = hospitalRepository.findById(id).get();
+//        设置修改的值
+        hospital.setStatus(status);
+        hospital.setUpdateTime(new Date());
+        hospitalRepository.save(hospital);
+    }
+//    医院详情信息
+    @Override
+    public Map<String, Object> getHospById(String id) {
+        Map<String, Object> result = new HashMap<>();
+        Hospital hospital = this.setHospitalHosType(hospitalRepository.findById(id).get());
+//        医院的基本信息(包含医院等级)
+        result.put("hospital",hospital);
+        //单独处理更直观
+        result.put("bookingRule", hospital.getBookingRule());
+        //不需要重复返回
+        hospital.setBookingRule(null);
+        return result;
+    }
+//    根据医院编号获取医院名称
+    @Override
+    public String getHospName(String hoscode) {
+        Hospital hospital = hospitalRepository.getHospitalByHoscode(hoscode);
+        if(hospital!=null){
+            return hospital.getHosname();
+        }
+        return null;
+    }
+
     private Hospital setHospitalHosType(Hospital hospital){
 //        根据dictCode和value获取医院等级名称
         String hostypeString = dictFeignClient.getName("Hostype", hospital.getHostype());
