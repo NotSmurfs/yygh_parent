@@ -22,4 +22,6 @@ public interface HospitalService {
     String getHospName(String hoscode);
 //    根据医院名称查询
     List<Hospital> findByHosname(String hosname);
+//    根据医院编号获取医院预约挂号详情
+    Map<String, Object> item(String hoscode);
 }
